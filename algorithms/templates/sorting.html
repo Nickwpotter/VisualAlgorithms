@@ -1,0 +1,105 @@
+{% extends "index.html" %}
+
+
+{% block content %}
+
+<div class="container p-2">
+    <h1 class="text-light">Sorting</h1>
+    <div class="d-lg-flex flex-row pt-1">
+        <div class="card flex-column flex-shrink-0 mb-3 me-lg-3">
+            <div class="card-body">
+                <form id ="sort-form">
+                    {{ csrf_token }}
+                    <div class="mb-3">
+                        <label for="data-size" class="form-label">Data Set Size</label><br>
+                        <small id="helpId" class="form-text text-muted">5 - 100</small>
+                        <input
+                            type="number"
+                            class="form-control"
+                            name="dataSize"
+                            id="data-size"
+                            aria-describedby="helpId"
+                            value="15"
+                            max="100"
+                            min="5"
+                            />
+                    </div>
+                    <div>
+                        <label for="value-range" class="form-label">Value Range</label><br>
+                        <small id="helpId" class="form-text text-muted">10 - 100</small>
+                        <input
+                            type="number"
+                            class="form-control"
+                            name="valueRange"
+                            id="value-range"
+                            aria-describedby="helpId"
+                            value="25"
+                            max="100"
+                            min="10"
+                            />
+                    </div>
+                    <div class="pt-2">
+                        <label for="algorithm-drop">Algorithm Selection</label>
+                        <select id="algorithm-drop"class="form-select" aria-label="Default select example" name="algorithm">
+                            <option value="1">Selection Sort</option>
+                            <option value="2">Merge Sort</option>
+                            <option value="3">Quick Sort</option>
+                            <option value="4">Bucket Sort</option>
+                            <option value="5">Radix Sort</option>
+                            <option value="6">Insertion Sort</option>
+                        </select>
+                    </div>
+                    <div class="pt-2">
+                        <button
+                        type="button"
+                        class="btn btn-primary btn-dark"
+                        onclick="submitSort()"
+                        >
+                            Sort
+                        </button>
+                    </div>                    
+
+                </form>
+            </div>
+        </div>
+        <div class= "card flex-column flex-lg-shrink-1 flex-grow-1 mb-3">
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="accordion mb-2 " id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button
+                    class="accordion-button"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseOne"
+                    aria-expanded="true"
+                    aria-controls="collapseOne"
+                >
+                    <h5>Sorting - How to use the sorting visualizer?</h1> 
+                </button>
+            </h2>
+            <div
+                id="collapseOne"
+                class="accordion-collapse collapse show"
+                aria-labelledby="headingOne"
+                data-bs-parent="#accordionExample"
+            >
+                <div class="accordion-body">
+                    <p>1 - Enter the data set size within available range 10 - 100. You must have at least 10 values in your data set.</p>
+                    <p>2 - Slide the data range to your desired value. The range is also fixed from 10 - 100. You must have some variablity in your data to visualize the algorithm</p>
+                    <p>3 - Choose an Algorithm.</p>
+                    <p>4 - Click "Sort" to watch the computer sort the data!</p>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+{% endblock %}

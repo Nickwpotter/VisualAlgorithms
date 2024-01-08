@@ -1,0 +1,11 @@
+body{
+    background: rgb(30, 30, 74);
+}
+.bg-img {
+    background-image: url("/static/img/backgroundGIF.gif");
+}   
+.bar {
+    background-color: #3498db;
+    margin: 0 2px;
+    transition: height 0.2s;
+}
