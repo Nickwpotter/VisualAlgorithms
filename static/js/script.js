@@ -1,5 +1,3 @@
-
-
 // generate random data takes html objects as args
 function generateArray(arrayRange=100, arraySize=10){
     if (arrayRange <= 0 || arraySize <= 0){
@@ -34,14 +32,6 @@ if (window.location.pathname != "/"){
     // remove background gif
     bodyElm.classList.remove("bg-img")
 
-
-
-    // searchForm.addEventListener("click", function(event){
-    //     event.preventDefault();
-    // });
-    // sortForm.addEventListener("click", function(event){
-    //     event.preventDefault();
-    // });
     // create new chart on page reload
     const ctx = document.getElementById("chart").getContext('2d');
     var myChart = new Chart(ctx, {
@@ -70,15 +60,15 @@ if (window.location.pathname != "/"){
     bodyElm.classList.add("bg-img")
 }
 
-
+// TODO - finish searching algorithm submission
 function submitSearch(){
-        
     const form = document.getElementById('search-form');
     const formData = new FormData(form);
 
     console.log(formData["algorithm"])
 }
 
+// function for submiting the sorting form
 function submitSort(){
     
     const form = document.getElementById('sort-form');
@@ -90,6 +80,7 @@ function submitSort(){
     const range = parseInt(formData.get("valueRange"))
     const size = parseInt(formData.get("dataSize"))
 
+    // generates an array using the form data
     const data = generateArray(range, size)
     myChart.data.datasets[0].data = data;
     myChart.data.labels = Array.from({ length: data.length }, (_, i) => i + 1),
@@ -233,7 +224,6 @@ function mergeSort(data) {
     console.log("Merge Sort");
     console.log(data);
 }
-
 
 function quickSort(data){
     console.log("Quick Sort")
