@@ -167,7 +167,6 @@ function selectionSort(data) {
     console.log(data);
 }
 
-
 function mergeSort(data) {
     fetch('/sorting/merge', {
         method: 'POST',
@@ -192,26 +191,40 @@ function mergeSort(data) {
             for (let i = 0; i < animations.length; i++) {
                 const step = animations[i];
                 const mergedArray = step.merged_array;
-                console.log(step, mergedArray)
                 // Highlight the bars being merged
-                const newColors = Array.from({ length: data.length }, (_, j) =>
-                    j >= step.start && j <= step.end ? SECONDARY_COLOR : PRIMARY_COLOR
-                );
-                myChart.data.datasets[0].backgroundColor = newColors;
+                let sortedData = []
+                console.log(sortedData)
+                let colorData = [];
+                for (let t = n = 0 ; n < data.length; n++){
+                    if(n < step.start){
+                        colorData.push('green');
+                        sortedData.push(myChart.data.datasets[0].data[n])
+                    }else if(n > step.end ){
+                        colorData.push('gray');
+                        sortedData.push(myChart.data.datasets[0].data[n])
+                    }else{
+                        colorData.push('red');
+                        sortedData[n] = mergedArray[t];
+                        t++;
+                    }
+                    console.log(sortedData, step.start)
+                }
+                myChart.data.datasets[0].backgroundColor = colorData;
                 myChart.update();
                 // Wait for a short duration
                 await sleep(ANIMATION_SPEED);
 
                 // Update the chart with the merged array for the current step
-                myChart.data.datasets[0].data = mergedArray;
-                myChart.update();
 
-                // Remove highlight after a short delay
-                setTimeout(() => {
-                    myChart.data.datasets[0].backgroundColor = Array.from({ length: data.length }, () => PRIMARY_COLOR);
-                    myChart.update();
-                }, ANIMATION_SPEED);
+                myChart.data.datasets[0].data = sortedData;
+                myChart.update();
+                await sleep(ANIMATION_SPEED);
             }
+            // Remove highlight after a short delay
+            setTimeout(() => {
+                myChart.data.datasets[0].backgroundColor = Array.from({ length: data.length }, () => PRIMARY_COLOR);
+                myChart.update();
+            }, ANIMATION_SPEED);
         }
 
         // Call the function to start the animation
