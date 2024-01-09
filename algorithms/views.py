@@ -112,7 +112,7 @@ def merge_helper(arr, animation_data, start, mid, end):
 
     # Store animation data for visualization
     animation_data['steps'].append({
-        'start': 0,
+        'start': start,
         'end': end,
         'merged_array': merged_array.copy(),
     })
