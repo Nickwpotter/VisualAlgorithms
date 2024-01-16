@@ -116,3 +116,48 @@ def merge_helper(arr, animation_data, start, mid, end):
         'end': end,
         'merged_array': merged_array.copy(),
     })
+
+# Function to find the partition position and perform swaps
+def partition(array, low, high, swaps):
+    pivot = array[high]
+    i = low - 1
+
+    for j in range(low, high):
+        if array[j] <= pivot:
+            i = i + 1
+            array[i], array[j] = array[j], array[i]
+            swaps.append((i, j))
+
+    array[i + 1], array[high] = array[high], array[i + 1]
+    swaps.append((i + 1, high))
+
+    return i + 1
+
+# Function to perform quicksort and return swaps
+def quickSort(array, low, high, swaps):
+    if low < high:
+        pi = partition(array, low, high, swaps)
+        quickSort(array, low, pi - 1, swaps)
+        quickSort(array, pi + 1, high, swaps)
+
+# Django view function
+def quick(request):
+    data = [1, 7, 4, 1, 10, 9, -2]
+    print("Unsorted Array")
+    print(data)
+
+    size = len(data)
+    swaps = []
+
+    quickSort(data, 0, size - 1, swaps)
+
+    print('Sorted Array in Ascending Order:')
+    print(data)
+
+    response_data = {
+        'original_array': data,
+        'swaps': swaps,
+        'sorted_array': data.copy()
+    }
+
+    return JsonResponse(response_data)

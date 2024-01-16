@@ -240,6 +240,67 @@ function mergeSort(data) {
 
 function quickSort(data){
     console.log("Quick Sort")
+
+    fetch('/sorting/quick', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: new URLSearchParams({ 'array[]': data }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(animationData => {
+        // Update the UI with sorted array and highlight bars
+        const sortedArray = animationData.sorted_array;
+        const animations = animationData.swap_indexes;
+        console.log(sortedArray, animations);
+        // Implement your animation logic using sortedArray and swapIndexes
+        let animationIndex = 0;
+
+        async function animateSwap() {
+            if (animationIndex < animations.length) {
+                const [index1, index2] = animations[animationIndex];
+                console.log(index1, index2)
+                // Highlight bars being swapped
+                const newColors = Array.from({ length: data.length }, (_, i) => i === index1 || i === index2 ? 'red' : 'rgba(161, 198, 247, 1)');
+                myChart.data.datasets[0].backgroundColor = newColors;
+                // Update the chart
+                myChart.update();
+                await sleep(1000);
+
+                // Swap bars in the chart
+                [myChart.data.datasets[0].data[index1], myChart.data.datasets[0].data[index2]] =
+                    [myChart.data.datasets[0].data[index2], myChart.data.datasets[0].data[index1]];
+                myChart.update();
+                await sleep(1000);
+                // Remove highlight after a short delay
+                setTimeout(() => {
+                    myChart.data.datasets[0].backgroundColor[index1] = PRIMARY_COLOR;
+                    myChart.data.datasets[0].backgroundColor[index2] = PRIMARY_COLOR;
+                    myChart.update();
+
+                    // Continue with the next animation
+                    animationIndex++;
+                    animateSwap();
+                }, ANIMATION_SPEED);
+            }
+        }
+
+        // Start the animation
+        animateSwap();
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+    });
+
+    console.log("Quick Sort");
+    console.log(data);
 }
 
 function bucketSort(data){
