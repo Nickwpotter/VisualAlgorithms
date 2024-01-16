@@ -258,11 +258,10 @@ function quickSort(data){
     .then(animationData => {
         // Update the UI with sorted array and highlight bars
         const sortedArray = animationData.sorted_array;
-        const animations = animationData.swap_indexes;
-        console.log(sortedArray, animations);
+        const animations = animationData.animations;
         // Implement your animation logic using sortedArray and swapIndexes
         let animationIndex = 0;
-
+        console.log("data for quick sort: ", animations )
         async function animateSwap() {
             if (animationIndex < animations.length) {
                 const [index1, index2] = animations[animationIndex];

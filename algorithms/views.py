@@ -121,14 +121,15 @@ def merge_helper(arr, animation_data, start, mid, end):
 def partition(array, low, high, swaps):
     pivot = array[high]
     i = low - 1
+    print('current array: ', array[low:high] )
 
     for j in range(low, high):
         if array[j] <= pivot:
-            i = i + 1
-            array[i], array[j] = array[j], array[i]
+            i += 1
+            (array[i], array[j]) = (array[j], array[i])
             swaps.append((i, j))
 
-    array[i + 1], array[high] = array[high], array[i + 1]
+    (array[i + 1], array[high]) = (array[high], array[i + 1])
     swaps.append((i + 1, high))
 
     return i + 1
@@ -142,22 +143,27 @@ def quickSort(array, low, high, swaps):
 
 # Django view function
 def quick(request):
-    data = [1, 7, 4, 1, 10, 9, -2]
-    print("Unsorted Array")
-    print(data)
+    if request.method == 'POST':
+        # Get the array from the AJAX request
+        data = request.POST.getlist('array[]', [])[0].split(",")    
+        print("Unsorted Array")
+        print(data)
 
-    size = len(data)
-    swaps = []
+        size = len(data)
+        swaps = []
 
-    quickSort(data, 0, size - 1, swaps)
+        quickSort(data, 0, size - 1, swaps)
 
-    print('Sorted Array in Ascending Order:')
-    print(data)
+        print('Sorted Array in Ascending Order:')
+        print(data)
 
-    response_data = {
-        'original_array': data,
-        'swaps': swaps,
-        'sorted_array': data.copy()
-    }
+        response_data = {
+            'original_array': data,
+            'animations': swaps,
+            'sorted_array': data.copy()
+        }
 
-    return JsonResponse(response_data)
+        return JsonResponse(response_data)
+    
+    # Handle GET requests or other HTTP methods
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
